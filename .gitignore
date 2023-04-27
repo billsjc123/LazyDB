@@ -1,0 +1,7 @@
+# IDE
+.fleet/
+.idea/
+.vscode/
+# For local test
+tmp/
+testLogFiles/
