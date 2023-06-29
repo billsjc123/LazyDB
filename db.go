@@ -5,6 +5,7 @@ import (
 	"lazydb/ds"
 	"lazydb/logfile"
 	"log"
+	"math"
 	"os"
 	"sort"
 	"strconv"
@@ -18,6 +19,7 @@ type (
 		index            *ds.ConcurrentMap[string]
 		strIndex         *strIndex
 		hashIndex        *hashIndex
+		listIndex        *listIndex
 		fidsMap          map[valueType]*MutexFids
 		activeLogFileMap map[valueType]*MutexLogFile
 		archivedLogFile  map[valueType]*ds.ConcurrentMap[uint32] // [uint32]*MutexLogFile
@@ -42,6 +44,11 @@ type (
 	}
 
 	hashIndex struct {
+		mu    *sync.RWMutex
+		trees map[string]*ds.AdaptiveRadixTree
+	}
+
+	listIndex struct {
 		mu    *sync.RWMutex
 		trees map[string]*ds.AdaptiveRadixTree
 	}
@@ -73,12 +80,15 @@ const (
 	logFileTypeNum = 5
 
 	encodeHeaderSize = 10
+
+	initialListSeq = uint32(math.MaxUint32 / 2)
 )
 
 var (
 	ErrKeyNotFound     = errors.New("key not found")
 	ErrLogFileNotExist = errors.New("log file is not exist")
 	ErrOpenLogFile     = errors.New("open Log file error")
+	ErrWrongIndex      = errors.New("index is out of range")
 )
 
 func newStrIndex() *strIndex {
@@ -87,6 +97,10 @@ func newStrIndex() *strIndex {
 
 func newHashIndex() *hashIndex {
 	return &hashIndex{trees: make(map[string]*ds.AdaptiveRadixTree), mu: new(sync.RWMutex)}
+}
+
+func newListIndex() *listIndex {
+	return &listIndex{trees: make(map[string]*ds.AdaptiveRadixTree), mu: new(sync.RWMutex)}
 }
 
 func Open(cfg DBConfig) (*LazyDB, error) {
@@ -103,6 +117,7 @@ func Open(cfg DBConfig) (*LazyDB, error) {
 		index:            ds.NewConcurrentMap(int(cfg.HashIndexShardCount)),
 		strIndex:         newStrIndex(),
 		hashIndex:        newHashIndex(),
+		listIndex:        newListIndex(),
 		fidsMap:          make(map[valueType]*MutexFids),
 		activeLogFileMap: make(map[valueType]*MutexLogFile),
 		archivedLogFile:  make(map[valueType]*ds.ConcurrentMap[uint32]),
