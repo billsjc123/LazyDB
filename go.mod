@@ -1,4 +1,4 @@
-module lazydb
+module github.com/billsjc123/LazyDB
 
 go 1.18
 
