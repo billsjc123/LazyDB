@@ -2,8 +2,8 @@ package lazydb
 
 import (
 	"encoding/binary"
-	"lazydb/ds"
-	"lazydb/logfile"
+	"github.com/billsjc123/LazyDB/ds"
+	"github.com/billsjc123/LazyDB/logfile"
 )
 
 func (db *LazyDB) LPush(key []byte, args ...[]byte) (err error) {

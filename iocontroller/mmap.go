@@ -1,8 +1,8 @@
 package iocontroller
 
 import (
+	"github.com/billsjc123/LazyDB/mmap"
 	"io"
-	"lazydb/mmap"
 	"os"
 )
 

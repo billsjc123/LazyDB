@@ -1,7 +1,7 @@
 package lazydb
 
 import (
-	"lazydb/logfile"
+	"github.com/billsjc123/LazyDB/logfile"
 )
 
 func (tx *Tx) Set(key, value []byte) {

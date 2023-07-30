@@ -1,9 +1,9 @@
 package lazydb
 
 import (
-	"lazydb/ds"
-	"lazydb/logfile"
-	"lazydb/util"
+	"github.com/billsjc123/LazyDB/ds"
+	"github.com/billsjc123/LazyDB/logfile"
+	"github.com/billsjc123/LazyDB/util"
 	"os"
 	"path/filepath"
 	"reflect"

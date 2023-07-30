@@ -3,7 +3,7 @@ package logfile
 import (
 	"errors"
 	"fmt"
-	"lazydb/iocontroller"
+	"github.com/billsjc123/LazyDB/iocontroller"
 	"path/filepath"
 	"sync"
 	"sync/atomic"

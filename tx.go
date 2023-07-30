@@ -2,7 +2,7 @@ package lazydb
 
 import (
 	"errors"
-	"lazydb/logfile"
+	"github.com/billsjc123/LazyDB/logfile"
 	"math/rand"
 	"sync"
 
