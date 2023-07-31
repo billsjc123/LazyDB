@@ -1,8 +1,8 @@
 package lazydb
 
 import (
-	"lazydb/ds"
-	"lazydb/logfile"
+	"github.com/billsjc123/LazyDB/ds"
+	"github.com/billsjc123/LazyDB/logfile"
 )
 
 func (tx *Tx) SAdd(key []byte, members ...[]byte) {

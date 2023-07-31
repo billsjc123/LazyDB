@@ -1,7 +1,7 @@
 package lazydb
 
 import (
-	"lazydb/util"
+	"github.com/billsjc123/LazyDB/util"
 	"os"
 	"path/filepath"
 	"reflect"

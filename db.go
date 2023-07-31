@@ -3,10 +3,10 @@ package lazydb
 import (
 	"encoding/binary"
 	"errors"
+	"github.com/billsjc123/LazyDB/ds"
+	"github.com/billsjc123/LazyDB/logfile"
+	"github.com/billsjc123/LazyDB/util"
 	"io"
-	"lazydb/ds"
-	"lazydb/logfile"
-	"lazydb/util"
 	"log"
 	"math"
 	"os"

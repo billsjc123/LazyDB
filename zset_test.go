@@ -1,8 +1,8 @@
 package lazydb
 
 import (
+	"github.com/billsjc123/LazyDB/util"
 	"github.com/stretchr/testify/assert"
-	"lazydb/util"
 	"os"
 	"path/filepath"
 	"testing"

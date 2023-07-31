@@ -3,7 +3,7 @@ package bench
 import (
 	"bytes"
 	"fmt"
-	"lazydb"
+	"github.com/billsjc123/LazyDB"
 	"math/rand"
 	"path/filepath"
 	"testing"

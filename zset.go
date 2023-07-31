@@ -2,10 +2,10 @@ package lazydb
 
 import (
 	"errors"
+	"github.com/billsjc123/LazyDB/ds"
+	"github.com/billsjc123/LazyDB/logfile"
+	"github.com/billsjc123/LazyDB/util"
 	"github.com/gansidui/skiplist"
-	"lazydb/ds"
-	"lazydb/logfile"
-	"lazydb/util"
 	"log"
 )
 
