@@ -35,6 +35,8 @@ var (
 const (
 	// FileIO standard file io.
 	FileIO IOType = iota
+	// MMap memory map
+	Mmap
 	// can add more type when needed
 )
 
@@ -48,15 +50,27 @@ type FType uint8
 
 const (
 	Strs FType = iota
+	List
+	Hash
+	Set
+	ZSet
 )
 
 var (
 	//  convert string in filename to FType
 	FileTypesMap = map[string]FType{
 		"strs": Strs,
+		"list": List,
+		"hash": Hash,
+		"set":  Set,
+		"zset": ZSet,
 	}
 	FileNamesMap = map[FType]string{
 		Strs: "log.strs.",
+		List: "log.list.",
+		Hash: "log.hash.",
+		Set:  "log.set.",
+		ZSet: "log.zset.",
 	}
 )
 
@@ -84,6 +98,10 @@ func Open(path string, fid uint32, fsize int64, ftype FType, ioType IOType) (*Lo
 	switch ioType {
 	case FileIO:
 		if controller, err = iocontroller.NewFileIOController(fileName, fsize); err != nil {
+			return nil, err
+		}
+	case Mmap:
+		if controller, err = iocontroller.NewMMapController(fileName, fsize); err != nil {
 			return nil, err
 		}
 	default:
