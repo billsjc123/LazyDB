@@ -5,7 +5,10 @@ aling with high write-throughput workloads.
 
 ## Design of LazyDB
 
-![](https://github.com/billsjc123/LazyDB/blob/main/imgs/architecture.png)
+<div align=center>
+<img src="https://github.com/billsjc123/LazyDB/blob/main/imgs/architecture.png" />
+</div>
+
 
 In LazyDB, there are two types of data that needed to be stored either in memory or on disk. The first one is the
 actual log data which records the detailed log information. Log data nee
@@ -19,7 +22,9 @@ ge Layer and Log Storage Layer. Among them, the log storage layer and in-me
 mory storage layer as well as garbage collection mechanism are designed in
 line with Bitcask's ideas.
 
-![](https://github.com/billsjc123/LazyDB/blob/main/imgs/specific.png)
+<div align=center>
+<img src="https://github.com/billsjc123/LazyDB/blob/main/imgs/specific.png" />
+</div>
 
 <details>
     <summary><b>Log storage layer</b></summary>
@@ -41,7 +46,7 @@ line with Bitcask's ideas.
      LazyDB is providing an interface to external database operations through APIs for five data types. As an embedded database, the user can call these interfaces directly in the code to manipulate the local database.
 </details>
 
-## Gettings Started
+## Getting Started
 
 ### Basic operations
 
