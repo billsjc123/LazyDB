@@ -9,6 +9,7 @@ import (
 	"sort"
 	"sync"
 	"sync/atomic"
+	"time"
 )
 
 func (db *LazyDB) buildStrIndex(entry *logfile.LogEntry, vPos *ValuePos) {
@@ -117,16 +118,19 @@ func (db *LazyDB) getValue(idxTree *ds.AdaptiveRadixTree, key []byte, typ valueT
 	if !ok {
 		return nil, ErrKeyNotFound
 	}
+	ts := time.Now().Unix()
 
-	// TODO: check expire time later
+	if val.expiredAt != 0 && val.expiredAt < ts {
+		return nil, ErrKeyNotFound
+	}
 
 	ent, err := db.readLogEntry(typ, val.fid, val.offset)
 	if err != nil {
 		return nil, err
 	}
 
-	// check if key has been deleted
-	if ent.Stat == logfile.SDelete {
+	// check if key has been deleted or expired
+	if ent.Stat == logfile.SDelete || (ent.ExpiredAt != 0 && ent.ExpiredAt < ts) {
 		return nil, ErrKeyNotFound
 	}
 
@@ -142,11 +146,17 @@ func (db *LazyDB) updateIndexTree(typ valueType, idxTree *ds.AdaptiveRadixTree, 
 	}
 	idxNode := &Value{fid: vPos.fid, offset: vPos.offset, entrySize: size}
 
-	// TODO: set expired time
+	if entry.ExpiredAt != 0 {
+		idxNode.expiredAt = entry.ExpiredAt
+	}
 
-	_, _ = idxTree.Put(entry.Key, idxNode)
+	oldVal, updated := idxTree.Put(entry.Key, idxNode)
 
-	// TODO: send discard
+	if sendDiscard {
+		if err := db.sendDiscard(oldVal, updated, typ); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
